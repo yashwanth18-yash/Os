@@ -1,1 +1,23 @@
-# Os
+; boot.asm
+bits 16
+org 0x7c00
+
+mov si, message
+
+print:
+    lodsb
+    cmp al, 0
+    je hang
+    mov ah, 0x0e
+    int 0x10
+    jmp print
+
+hang:
+    cli
+    hlt
+    jmp hang
+
+message db "Bootstrap program running!", 0
+
+times 510 - ($ - $$) db 0
+dw 0xaa55
